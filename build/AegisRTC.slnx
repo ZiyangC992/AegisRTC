@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Solution>
+	<Configurations>
+		<BuildType Name="Debug"/>
+		<BuildType Name="Release"/>
+		<BuildType Name="MinSizeRel"/>
+		<BuildType Name="RelWithDebInfo"/>
+		<Platform Name="x64"/>
+	</Configurations>
+	<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="880f8fd4-9c21-3c0d-8962-fba06aee5a08" DefaultStartup="true">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="aegis_adaptive_controller_test.vcxproj"/>
+		<BuildDependency Project="aegis_ffmpeg_video_encoder_test.vcxproj"/>
+		<BuildDependency Project="aegis_format_selector_test.vcxproj"/>
+		<BuildDependency Project="aegis_frame_reassembler_test.vcxproj"/>
+		<BuildDependency Project="aegis_nack_test.vcxproj"/>
+		<BuildDependency Project="aegis_network_monitor_test.vcxproj"/>
+		<BuildDependency Project="aegis_network_simulator_test.vcxproj"/>
+		<BuildDependency Project="aegis_retransmission_cache_test.vcxproj"/>
+		<BuildDependency Project="aegis_retransmission_e2e_test.vcxproj"/>
+		<BuildDependency Project="aegis_rtc.vcxproj"/>
+		<BuildDependency Project="aegis_video_encoder_factory_test.vcxproj"/>
+		<BuildDependency Project="aegis_wire_protocol_test.vcxproj"/>
+		<Build Solution="Debug|*" Project="false"/>
+		<Build Solution="Release|*" Project="false"/>
+		<Build Solution="MinSizeRel|*" Project="false"/>
+		<Build Solution="RelWithDebInfo|*" Project="false"/>
+	</Project>
+	<Project Path="RUN_TESTS.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="6cd111c6-4fd1-3915-9a4f-a4b94f331571">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<Build Solution="Debug|*" Project="false"/>
+		<Build Solution="Release|*" Project="false"/>
+		<Build Solution="MinSizeRel|*" Project="false"/>
+		<Build Solution="RelWithDebInfo|*" Project="false"/>
+	</Project>
+	<Project Path="ZERO_CHECK.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ec5815e0-0a2f-3518-bf38-3a526887e9c8"/>
+	<Project Path="aegis_adaptive_controller_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="64d58757-ea83-3acf-b13f-a69338a3be9b">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_ffmpeg_video_encoder_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="3d8f5eec-44c0-38e7-87c9-d6b33b975c2b">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_format_selector_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="45fe5518-191b-3991-9387-5ab6a4e24976">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_frame_reassembler_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a7f0c1e7-83c7-3d81-916b-2a28c2350d92">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_nack_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="9224ae60-e7c5-3721-b501-3c8bab98105d">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_network_monitor_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="9f8e0cea-f3d0-39a3-8d7d-b1d89ded671b">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_network_simulator_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="b9d4da3b-224b-32d5-a70d-0a52947377eb">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_retransmission_cache_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="8902692d-7e75-3da3-a4d5-4d613cd1703f">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_retransmission_e2e_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="8049025f-fc1f-3cbb-9865-164b0503b1fc">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_rtc.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="2d9ab2fe-39fc-3b70-b335-cb78ba46c7d9">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_video_encoder_factory_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="f72c0962-3296-3dff-acac-8913d9246433">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="aegis_wire_protocol_test.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ccf096f3-2dbc-3d87-931f-146a1fe0d0c9">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+</Solution>

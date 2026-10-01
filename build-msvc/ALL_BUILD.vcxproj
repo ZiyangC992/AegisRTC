@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3CC1FCB2-495E-322C-AAF4-336822EAC743}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\AegisRTC\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/AegisRTC/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\mingw64\bin\cmake.exe -SD:/AegisRTC -BD:/AegisRTC/build-msvc --check-stamp-file D:/AegisRTC/build-msvc/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\mingw64\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\AegisRTC\build-msvc\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/AegisRTC/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\mingw64\bin\cmake.exe -SD:/AegisRTC -BD:/AegisRTC/build-msvc --check-stamp-file D:/AegisRTC/build-msvc/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\mingw64\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\AegisRTC\build-msvc\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/AegisRTC/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\mingw64\bin\cmake.exe -SD:/AegisRTC -BD:/AegisRTC/build-msvc --check-stamp-file D:/AegisRTC/build-msvc/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\mingw64\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\AegisRTC\build-msvc\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/AegisRTC/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\mingw64\bin\cmake.exe -SD:/AegisRTC -BD:/AegisRTC/build-msvc --check-stamp-file D:/AegisRTC/build-msvc/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\mingw64\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\mingw64\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;D:\AegisRTC\build-msvc\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\AegisRTC\build-msvc\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\ZERO_CHECK.vcxproj">
+      <Project>{271FC264-8620-3C16-8C29-5CE6E402FFC3}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_adaptive_controller_test.vcxproj">
+      <Project>{22F8E70A-5764-3DBA-AD15-11BF6F46F3FA}</Project>
+      <Name>aegis_adaptive_controller_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_ffmpeg_video_encoder_test.vcxproj">
+      <Project>{7EECE451-B614-3436-94FA-5208D8463CF0}</Project>
+      <Name>aegis_ffmpeg_video_encoder_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_format_selector_test.vcxproj">
+      <Project>{CBC7C4C2-7E10-3DF6-86E6-E4E183994B7B}</Project>
+      <Name>aegis_format_selector_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_frame_reassembler_test.vcxproj">
+      <Project>{85A9082F-8ED0-3683-AC35-0CFEDC6F9155}</Project>
+      <Name>aegis_frame_reassembler_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_nack_test.vcxproj">
+      <Project>{7F646D79-32A7-30AE-887C-76DD4294EE02}</Project>
+      <Name>aegis_nack_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_network_monitor_test.vcxproj">
+      <Project>{21D84CA6-5516-31AD-9C1B-4AE51D38CADF}</Project>
+      <Name>aegis_network_monitor_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_network_simulator_test.vcxproj">
+      <Project>{3DE47433-A85F-3C12-919E-EE5FC9B9E3C5}</Project>
+      <Name>aegis_network_simulator_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_retransmission_cache_test.vcxproj">
+      <Project>{E8CF3463-20F9-36B4-8CC4-180EC8B2ADB3}</Project>
+      <Name>aegis_retransmission_cache_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_retransmission_e2e_test.vcxproj">
+      <Project>{B60849ED-B7F4-3D41-8D08-72B1D0167B72}</Project>
+      <Name>aegis_retransmission_e2e_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_rtc.vcxproj">
+      <Project>{AEFA784E-BCF4-3523-AB43-AC19EF566812}</Project>
+      <Name>aegis_rtc</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_video_encoder_factory_test.vcxproj">
+      <Project>{5F36B44C-D3C6-3BDD-BBF8-CF15333F7FAD}</Project>
+      <Name>aegis_video_encoder_factory_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\AegisRTC\build-msvc\aegis_wire_protocol_test.vcxproj">
+      <Project>{F3DA87A8-B0CF-3584-8A86-B2CC8BBB7069}</Project>
+      <Name>aegis_wire_protocol_test</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

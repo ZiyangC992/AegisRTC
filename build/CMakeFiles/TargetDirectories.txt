@@ -1,0 +1,15 @@
+D:/AegisRTC/build/CMakeFiles/aegis_rtc.dir
+D:/AegisRTC/build/CMakeFiles/aegis_format_selector_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_network_simulator_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_wire_protocol_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_frame_reassembler_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_nack_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_retransmission_cache_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_retransmission_e2e_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_network_monitor_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_adaptive_controller_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_ffmpeg_video_encoder_test.dir
+D:/AegisRTC/build/CMakeFiles/aegis_video_encoder_factory_test.dir
+D:/AegisRTC/build/CMakeFiles/RUN_TESTS.dir
+D:/AegisRTC/build/CMakeFiles/ALL_BUILD.dir
+D:/AegisRTC/build/CMakeFiles/ZERO_CHECK.dir

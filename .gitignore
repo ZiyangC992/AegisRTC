@@ -1,0 +1,30 @@
+# Build directories
+build/
+build-msvc/
+out/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp

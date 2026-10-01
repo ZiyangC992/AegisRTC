@@ -1,0 +1,10 @@
+^D:\AEGISRTC\BUILD-MSVC\CMAKEFILES\0830E39F98D8858413CAA8785C439BBD\GENERATE.STAMP.RULE
+setlocal
+C:\mingw64\bin\cmake.exe -SD:/AegisRTC -BD:/AegisRTC/build-msvc --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/AegisRTC/build-msvc/AegisRTC.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

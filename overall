@@ -1,0 +1,12 @@
+完善重传标志 kRetransmission；  ok
+抽取统一的 NACK→缓存查找→重传逻辑；   ok
+补充端到端测试，包括序列号回绕；   ok
+完善网络监控指标；    
+实现自适应策略；
+抽象 IVideoEncoder；
+让模拟编码器实现该接口；
+接入 Media Foundation H.264；
+接入 FFmpeg；
+扩展 QSV、NVENC、AMF；
+重构 app.cpp 和采集层；
+Linux 后端与跨平台测试。

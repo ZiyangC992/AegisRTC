@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\x64\Debug\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_adaptive_controller_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_ffmpeg_video_encoder_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_format_selector_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_frame_reassembler_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_nack_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_network_monitor_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_network_simulator_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_retransmission_cache_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_retransmission_e2e_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_rtc.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_video_encoder_factory_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\Debug\aegis_wire_protocol_test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\AegisRTC\build-msvc\x64\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

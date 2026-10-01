@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\AegisRTC\build\CMakeFiles\e04b5bea90c38ea449f9ec4a43d181ba\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{DE519C4E-2B76-3AB1-85DE-E42B246D2B3F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

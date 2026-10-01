@@ -1,0 +1,201 @@
+Start testing: Sep 30 20:06 中国标准时间
+----------------------------------------------------------
+1/11 Testing: format_selector_test
+1/11 Test: format_selector_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_format_selector_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"format_selector_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Format selector tests passed. 
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"format_selector_test" end time: Sep 30 20:06 中国标准时间
+"format_selector_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/11 Testing: network_simulator_test
+2/11 Test: network_simulator_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_network_simulator_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"network_simulator_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Network simulator delay test passed.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"network_simulator_test" end time: Sep 30 20:06 中国标准时间
+"network_simulator_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/11 Testing: wire_protocol_test
+3/11 Test: wire_protocol_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_wire_protocol_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"wire_protocol_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Wire protocol serialization test passed.
+Wire protocol round-trip test passed.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"wire_protocol_test" end time: Sep 30 20:06 中国标准时间
+"wire_protocol_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/11 Testing: frame_reassembler_test
+4/11 Test: frame_reassembler_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_frame_reassembler_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"frame_reassembler_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Frame reassembler ordered test passed.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"frame_reassembler_test" end time: Sep 30 20:06 中国标准时间
+"frame_reassembler_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/11 Testing: nack_test
+5/11 Test: nack_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_nack_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"nack_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Nack controller tests passed.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"nack_test" end time: Sep 30 20:06 中国标准时间
+"nack_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/11 Testing: retransmission_cache
+6/11 Test: retransmission_cache
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_retransmission_cache_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"retransmission_cache" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Retransmission cache tests passed.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"retransmission_cache" end time: Sep 30 20:06 中国标准时间
+"retransmission_cache" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/11 Testing: retransmission_e2e_test
+7/11 Test: retransmission_e2e_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_retransmission_e2e_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"retransmission_e2e_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"retransmission_e2e_test" end time: Sep 30 20:06 中国标准时间
+"retransmission_e2e_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/11 Testing: network_monitor_test
+8/11 Test: network_monitor_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_network_monitor_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"network_monitor_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"network_monitor_test" end time: Sep 30 20:06 中国标准时间
+"network_monitor_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/11 Testing: adaptive_controller_test
+9/11 Test: adaptive_controller_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_adaptive_controller_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"adaptive_controller_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+Adaptive controller tests passed.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"adaptive_controller_test" end time: Sep 30 20:06 中国标准时间
+"adaptive_controller_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/11 Testing: ffmpeg_video_encoder_test
+10/11 Test: ffmpeg_video_encoder_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_ffmpeg_video_encoder_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"ffmpeg_video_encoder_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+[h264_mf @ 0000023929113B80] MFT name: 'H264 Encoder MFT'
+H.264 encoder: h264_d3d12va
+H.264 encoder: h264_mf
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+Encode output count: 0
+Poll output count: 0
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"ffmpeg_video_encoder_test" end time: Sep 30 20:06 中国标准时间
+"ffmpeg_video_encoder_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/11 Testing: video_encoder_factory_test
+11/11 Test: video_encoder_factory_test
+Command: "D:/AegisRTC/build-msvc/Debug/aegis_video_encoder_factory_test.exe"
+Directory: D:/AegisRTC/build-msvc
+"video_encoder_factory_test" start time: Sep 30 20:06 中国标准时间
+Output:
+----------------------------------------------------------
+[h264_mf @ 0000029CD48D2180] MFT name: 'H264 Encoder MFT'
+Video encoder factory test passed.
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"video_encoder_factory_test" end time: Sep 30 20:06 中国标准时间
+"video_encoder_factory_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 30 20:06 中国标准时间

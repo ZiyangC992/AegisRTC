@@ -26,8 +26,23 @@ int main()
 	    .capturer_backend = 
 		aegis::media::VideoCapturerBackend::
 		    kDefault,
+	    
+ 	    .network_backend = 
+		aegis::engine::NetworkBackend::kUdp,
 
-            .frame_count = 100U,
+	    .udp_local_address = 
+		"192.168.233.129",
+
+	    .udp_local_port = 
+		9000,
+
+	    .udp_remote_address = 
+		"192.168.233.1",
+
+	    .udp_remote_port = 
+		9001,
+
+            .frame_count = 10U,
             .frame_interval =
                 std::chrono::milliseconds{33}
         };

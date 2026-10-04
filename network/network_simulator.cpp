@@ -44,7 +44,7 @@ NetworkSimulator::NetworkSimulator (
     } 
 }
 
-[[nodiscard]] const NetworkSimulatorStats& 
+[[nodiscard]] const NetworkTransportStats& 
 NetworkSimulator::stats() const noexcept {
     return stats_;
 }
@@ -165,64 +165,56 @@ NetworkSimulator::queued_packets() const noexcept {
     return true;
 }
 
-[[nodiscard]] std::vector<ScheduledPacket>
+[[nodiscard]] std::vector<ReceivedPacket>
 NetworkSimulator::ReceiveReady(
     TimePoint now
-) {
-    //Store packets that are ready for delivery.
-    std::vector<ScheduledPacket> ready_packets;
+)
+{
+    // Store packets that are ready for delivery.
+    std::vector<ReceivedPacket> ready_packets;
 
-    //Check packets from the front of the queue.
-    while (!receive_queue_.empty()) {
-        const ScheduledPacket& first_packet = 
-            *receive_queue_.begin();
+    // Check packets from the front of the queue.
+    while (!receive_queue_.empty())
+    {
+        // The multiset keeps the earliest packet at the front.
+        auto first_iterator =
+            receive_queue_.begin();
 
-        //Stop when the first packet is not ready.
-        if (first_packet.ready_time > now){
+        const ScheduledPacket& first_packet =
+            *first_iterator;
+
+        // Stop when the earliest packet is not ready yet.
+        if (first_packet.ready_time > now)
+        {
             break;
         }
 
-        //Get an iterator to the earliest packet.
-        auto first_iterator = 
-            receive_queue_.begin();
-        
-        //Save the payload size before moving the pakcet.
-        const std::size_t delivered_bytes = 
-            first_iterator->wire_data.size();
-        
-        //Move the packet without copying its payload.
-        ready_packets.push_back(
-            std::move(*first_iterator)
-        );
+        // Save metadata before removing the packet.
+        const std::size_t delivered_bytes =
+            first_packet.wire_data.size();
 
-        //Update delivery statistics.
-        ++stats_.packets_delivered;
-
-        stats_.bytes_delivered +=
-            static_cast<std::uint64_t>(
-                delivered_bytes);
-
-        // Measure end-to-end simulated network latency.
         const auto latency =
             std::chrono::duration_cast<
-                std::chrono::microseconds>(
-                now - first_iterator->send_time);
+                std::chrono::microseconds
+            >(
+                now - first_packet.send_time
+            );
 
-        stats_.total_latency_microseconds +=
+        const std::uint64_t latency_microseconds =
             static_cast<std::uint64_t>(
-                latency.count());
-        
-        ++stats_.latency_sample_count;
+                latency.count()
+            );
 
+        // Measure the difference from the previous latency sample.
         if (stats_.has_previous_latency)
         {
             const std::uint64_t jitter_microseconds =
-                stats_.total_latency_microseconds >=
-                        stats_.previous_latency_microseconds
-                    ? stats_.total_latency_microseconds -
-                          stats_.previous_latency_microseconds
-                    : stats_.previous_latency_microseconds -
-                          stats_.total_latency_microseconds;
+                latency_microseconds >=
+                    stats_.previous_latency_microseconds
+                ? latency_microseconds -
+                    stats_.previous_latency_microseconds
+                : stats_.previous_latency_microseconds -
+                    latency_microseconds;
 
             stats_.total_jitter_microseconds +=
                 jitter_microseconds;
@@ -234,16 +226,41 @@ NetworkSimulator::ReceiveReady(
             stats_.has_previous_latency = true;
         }
 
+        // Save the current latency as the previous sample.
         stats_.previous_latency_microseconds =
-            stats_.total_latency_microseconds;
+            latency_microseconds;
 
-        //Remove the packet from the delivery queue.
+        // Update delivery statistics.
+        ++stats_.packets_delivered;
+
+        stats_.bytes_delivered +=
+            static_cast<std::uint64_t>(
+                delivered_bytes
+            );
+
+        stats_.total_latency_microseconds +=
+            latency_microseconds;
+
+        ++stats_.latency_sample_count;
+
+        // Move the serialized packet payload into the
+        // transport-independent ReceivedPacket object.
+        ready_packets.push_back(
+            ReceivedPacket{
+                .wire_data =
+                    std::move(first_iterator->wire_data),
+
+                .receive_time = now
+            }
+        );
+
+        // Remove the packet from the simulator queue.
         receive_queue_.erase(
             first_iterator
-        );        
+        );
     }
 
-    //Return all packets that have arrived.
+    // Return all packets that are ready now.
     return ready_packets;
 }
 

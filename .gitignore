@@ -30,3 +30,11 @@ Makefile
 *.tmpbuild-linux/
 build-msvc/
 *.save
+
+
+build-linux/
+build-msvc/
+*.save
+*.o
+*.obj
+*.exe

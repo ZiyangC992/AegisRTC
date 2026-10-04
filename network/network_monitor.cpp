@@ -1,5 +1,5 @@
 #include "aegis/network/network_monitor.hpp"
-#include "aegis/network/network_simulator.hpp"
+#include "aegis/network/network_transport.hpp"
 
 #include <cstdint>
 #include <cstddef>
@@ -7,7 +7,7 @@
 namespace aegis::network {
 
 [[nodiscard]] NetworkQualitySnapshot NetworkMonitor::Update(
-    const NetworkSimulatorStats& stats,
+    const NetworkTransportStats& stats,
     std::size_t queued_packets,
     std::uint64_t retransmission_packets,
     std::uint64_t retransmission_cache_hits,

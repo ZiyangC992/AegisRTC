@@ -2,6 +2,7 @@
 #include "aegis/engine/session_reporter.hpp"
 #include "aegis/media/video_encoder_factory.hpp"
 #include "aegis/media/video_capturer_factory.hpp"
+#include "aegis/network/udp_transport.hpp"
 
 #include <stdexcept>
 #include <utility>
@@ -9,6 +10,62 @@
 #include <thread>
 
 namespace aegis::engine {
+
+namespace
+{
+
+std::unique_ptr<
+    aegis::network::INetworkTransport
+>
+CreateNetworkTransport(
+    const SessionConfig& config
+)
+{
+    if (config.network_backend ==
+        NetworkBackend::kUdp)
+    {
+        return std::make_unique<
+            aegis::network::UdpTransport
+        >(
+            aegis::network::UdpTransportConfig{
+                .local_address =
+                    config.udp_local_address,
+
+                .local_port =
+                    config.udp_local_port,
+
+                .remote_address =
+                    config.udp_remote_address,
+
+                .remote_port =
+                    config.udp_remote_port
+            }
+        );
+    }
+
+    return std::make_unique<
+        aegis::network::NetworkSimulator
+    >(
+        aegis::network::NetworkSimulatorConfig{
+            .bandwidth_bps =
+                config.bandwidth_bps,
+
+            .base_delay =
+                config.network_base_delay,
+
+            .jitter =
+                config.network_jitter,
+
+            .random_loss_rate =
+                config.network_random_loss_rate,
+
+            .random_seed =
+                config.network_random_seed
+        }
+    );
+}
+
+} // namespace
 
 Session::Session(
     SessionConfig config
@@ -20,24 +77,8 @@ Session::Session(
                     config_.max_payload_bytes
             }
     ),
-    network_simulator_(
-        aegis::network::NetworkSimulatorConfig{
-            .bandwidth_bps = 
-                config_.bandwidth_bps,
-
-            .base_delay = 
-                config_.network_base_delay,
-
-            .jitter = 
-                config_.network_jitter,
-
-            .random_loss_rate = 
-                config_.network_random_loss_rate,
-
-            .random_seed = 
-                config_.network_random_seed
-        }
-    ),
+    network_transport_(
+    	CreateNetworkTransport(config_)),
     retransmission_cache_(
         aegis::network::RetransmissionCacheConfig{
             .max_packets = 
@@ -250,7 +291,7 @@ void Session::DrainNetwork()
         config_.drain_timeout;
 
     while(
-        network_simulator_.queued_packets() > 0U)
+        network_transport_->queued_packets() > 0U)
     {
         const aegis::TimePoint now = 
             aegis::network::Clock::now();
@@ -263,7 +304,7 @@ void Session::DrainNetwork()
         }
 
         const std::size_t queue_before =
-            network_simulator_.queued_packets();
+            network_transport_->queued_packets();
 
         const auto receive_result = 
             ProcessReadyPackets(now);
@@ -275,7 +316,7 @@ void Session::DrainNetwork()
             Expire(now);
 
         const std::size_t queue_after = 
-            network_simulator_.queued_packets();
+            network_transport_->queued_packets();
 
         SessionReporter::PrintDrainResult(
             receive_result,
@@ -294,7 +335,7 @@ void Session::DrainNetwork()
 void Session::PrintFinalStatistics() const
 {
     const auto network_stats =
-        network_simulator_.stats();
+        network_transport_->stats();
 
     const auto &statistics =
         statistics_;
@@ -302,7 +343,7 @@ void Session::PrintFinalStatistics() const
     SessionReporter::PrintFinalStatistics(
         statistics,
         network_stats,
-        network_simulator_.queued_packets()
+        network_transport_->queued_packets()
     );
 }
 
@@ -410,7 +451,7 @@ Session::SendEncodedFrame(
         );
 
         const bool accepted = 
-            network_simulator_.Send(
+            network_transport_->Send(
                 std::move(wire_data),
                 send_time
             );
@@ -449,7 +490,7 @@ Session::ProcessReadyPackets(
     ReceiveResult result{};
 
     const auto receive_packets = 
-        network_simulator_.ReceiveReady(
+        network_transport_->ReceiveReady(
             receive_time
         );
 
@@ -625,7 +666,7 @@ Session::ProcessNackRequests(
         }
 
         const bool accepted = 
-            network_simulator_.Send(
+            network_transport_->Send(
                 std::move(retransmission_wire_data),
                 send_time
             );
@@ -675,8 +716,8 @@ Session::UpdateNetworkQuality(
 {
 
     return network_monitor_.Update(
-        network_simulator_.stats(),
-        network_simulator_.queued_packets(),
+        network_transport_->stats(),
+        network_transport_->queued_packets(),
         retransmission_packets,
         cache_hits,
         cache_misses
@@ -725,4 +766,5 @@ Session::EvaluateAdaptation(
     return result;
 
 }
+
 } //namespace aegis::engine

@@ -2,6 +2,7 @@
 
 #include "aegis/common.hpp"
 #include "aegis/network/video_packetizer.hpp"
+#include "aegis/network/network_transport.hpp"
 
 #include <chrono>
 #include <vector>
@@ -48,43 +49,12 @@ struct ScheduledPacketCompare {
     }
 };
 
-struct NetworkSimulatorStats {
-    //Number of packets accepted by Send().
-    std::uint64_t packets_sent{0};
-
-    //Number of packets dropped by loss simulation.
-    std::uint64_t packets_dropped{0};
-
-    //Total bytes accepted by Send().
-    std::uint64_t bytes_sent{0};
-
-    //Number of packets delivered by ReceiveReady().
-    std::uint64_t packets_delivered{0};
-
-    //Total bytes delivered to the receive.
-    std::uint64_t bytes_delivered{0};
-
-    // Sum of packet delivery latency in microseconds.
-    std::uint64_t total_latency_microseconds{0};
-
-    // Number of packets used for latency calculation.
-    std::uint64_t latency_sample_count{0};
-
-    // Sum of absolute latency differences in microseconds.
-    std::uint64_t total_jitter_microseconds{0};
-
-    // Number of jitter samples.
-    std::uint64_t jitter_sample_count{0};
-
-    // Previous packet latency.
-    std::uint64_t previous_latency_microseconds{0};
-
-    // Whether a previous latency sample exists.
-    bool has_previous_latency{false};
-};
+using NetworkSimulatorStats = 
+    NetworkTransportStats;
 
 
-class NetworkSimulator final {
+class NetworkSimulator final
+  : public INetworkTransport {
 public:
     explicit NetworkSimulator(
         NetworkSimulatorConfig config
@@ -93,18 +63,18 @@ public:
     [[nodiscard]] bool Send(
         std::vector<std::uint8_t> wire_data,
         TimePoint now
-    );
+    ) override;
 
-    [[nodiscard]] std::vector<ScheduledPacket>
-    ReceiveReady(TimePoint now);
+    [[nodiscard]] std::vector<ReceivedPacket>
+    ReceiveReady(TimePoint now) override;
 
     //Return a read-only view of network statistics.
-    [[nodiscard]] const NetworkSimulatorStats&
-    stats() const noexcept;
+    [[nodiscard]] const NetworkTransportStats&
+    stats() const noexcept override;
 
     //Return the number of packets waiting for delivery.
     [[nodiscard]] std::size_t
-    queued_packets() const noexcept;
+    queued_packets() const noexcept override;
 
 private:
     NetworkSimulatorConfig config_;
@@ -131,7 +101,7 @@ private:
         jitter_distribution_;
 
     //Runtime statistics collected by the simulator.
-    NetworkSimulatorStats stats_;
+    NetworkTransportStats stats_;
 };
 
 

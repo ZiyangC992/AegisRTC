@@ -1,35 +1,33 @@
-# Require at least CMake 3.20.
 cmake_minimum_required(VERSION 3.20)
 
-# Project metadata.
 project(AegisRTC
     VERSION 0.1.0
     DESCRIPTION "Adaptive RTC engine for lossy networks"
     LANGUAGES CXX
 )
 
-# Require C++20.
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Build the executable.
-add_executable(aegis_rtc
-    app_linux.cpp
+enable_testing()
 
-    media/v4l2_video_capturer.cpp
-    media/video_capturer.cpp
-    media/video_capturer_factory.cpp
+# ============================================================
+# Common source files
+# ============================================================
 
+set(AEGIS_COMMON_SOURCES
     engine/session.cpp
     engine/session_reporter.cpp
     engine/adaptive_controller.cpp
     engine/nack.cpp
-    
+
+    media/video_capturer.cpp
+    media/video_capturer_factory.cpp
     media/video_encoder_factory.cpp
     media/simulated_video_encoder.cpp
-    media/video_encoder_factory.cpp
-	
+    media/ffmpeg_video_encoder.cpp
+
     network/frame_reassembler.cpp
     network/network_monitor.cpp
     network/network_simulator.cpp
@@ -38,306 +36,240 @@ add_executable(aegis_rtc
     network/wire_protocol.cpp
 )
 
-# Allow source files to include headers like:
-# #include "aegis/media/mf_video_capturer.hpp"
+# ============================================================
+# Platform-specific source files
+# ============================================================
+
+if (MSVC)
+
+    set(AEGIS_PLATFORM_SOURCES
+        app.cpp
+        media/mf_video_capturer.cpp
+        network/udp_transport_windows.cpp
+    )
+
+elseif (UNIX)
+
+    set(AEGIS_PLATFORM_SOURCES
+        app_linux.cpp
+        media/v4l2_video_capturer.cpp
+        network/udp_transport.cpp
+    )
+
+else()
+
+    message(FATAL_ERROR
+        "Unsupported platform."
+    )
+
+endif()
+
+# ============================================================
+# Main executable
+# ============================================================
+
+add_executable(aegis_rtc
+    ${AEGIS_COMMON_SOURCES}
+    ${AEGIS_PLATFORM_SOURCES}
+)
+
 target_include_directories(aegis_rtc
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# Platform-specific compiler options and libraries
-if(MSVC)
+# ============================================================
+# Platform compiler and linker settings
+# ============================================================
+
+if (MSVC)
+
     target_compile_options(aegis_rtc
         PRIVATE
             /W4
             /permissive-
             /utf-8
     )
-    
+
     target_include_directories(aegis_rtc
-	PRIVATE
-	    ${CMAKE_CURRENT_SOURCE_DIR}/include
-	    D:/vcpkg/installed/x64-windows/include
-    )
-    
-    target_link_directories(aegis_rtc
-	PRIVATE
-	    D:/vcpkg/installed/x64-windows/lib
+        PRIVATE
+            D:/vcpkg/installed/x64-windows/include
     )
 
-    # Windows Media Foundation and COM libraries.
+    target_link_directories(aegis_rtc
+        PRIVATE
+            D:/vcpkg/installed/x64-windows/lib
+    )
+
     target_link_libraries(aegis_rtc
         PRIVATE
+            Ws2_32
+
             mf
             mfplat
             mfreadwrite
             mfuuid
             ole32
-	    avcodec
-	    avformat
-    	    avutil
-	    swscale
-    )
-elseif (UNIX)
-	target_compile_options(aegis_rtc
-		PRIVATE
-			-Wall
-			-Wextra
-			-Wpedantic
-	)
-	
-	target_link_libraries(aegis_rtc
-		PRIVATE
-			avcodec
-			avformat
-			avutil
-			swscale
-			v4l2
-	)
-else()
 
-    message(FATAL_ERROR
-        "This stage currently supports Windows with MSVC only."
+            avcodec
+            avformat
+            avutil
+            swscale
     )
+
+elseif (UNIX)
+
+    target_compile_options(aegis_rtc
+        PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+    )
+
+    target_link_libraries(aegis_rtc
+        PRIVATE
+            avcodec
+            avformat
+            avutil
+            swscale
+            v4l2
+    )
+
 endif()
 
-enable_testing()
+# ============================================================
+# Helper function for ordinary tests
+# ============================================================
 
-add_executable(aegis_format_selector_test
+function(add_aegis_test TEST_TARGET TEST_NAME)
+
+    add_executable(${TEST_TARGET}
+        ${ARGN}
+    )
+
+    target_include_directories(${TEST_TARGET}
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+    target_compile_features(${TEST_TARGET}
+        PRIVATE
+            cxx_std_20
+    )
+
+    add_test(
+        NAME ${TEST_NAME}
+        COMMAND ${TEST_TARGET}
+    )
+
+endfunction()
+
+# ============================================================
+# Basic unit tests
+# ============================================================
+
+add_aegis_test(
+    aegis_format_selector_test
+    format_selector_test
     tests/format_selector_test.cpp
     media/format_selector.cpp
 )
 
-target_include_directories(aegis_format_selector_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(aegis_format_selector_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME format_selector_test
-    COMMAND aegis_format_selector_test
-)
-
-# Enable CTest support
-enable_testing()
-
-add_executable(aegis_network_simulator_test
+add_aegis_test(
+    aegis_network_simulator_test
+    network_simulator_test
     tests/network_simulator_test.cpp
     network/network_simulator.cpp
 )
 
-target_include_directories(aegis_network_simulator_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(aegis_network_simulator_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME network_simulator_test
-    COMMAND aegis_network_simulator_test
-)
-
-add_executable(aegis_wire_protocol_test
+add_aegis_test(
+    aegis_wire_protocol_test
+    wire_protocol_test
     tests/wire_protocol_test.cpp
     network/wire_protocol.cpp
+    network/video_packetizer.cpp
 )
 
-target_include_directories(aegis_wire_protocol_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(aegis_wire_protocol_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME wire_protocol_test
-    COMMAND aegis_wire_protocol_test
-)
-
-add_executable(aegis_frame_reassembler_test
+add_aegis_test(
+    aegis_frame_reassembler_test
+    frame_reassembler_test
     tests/frame_reassembler_test.cpp
     network/frame_reassembler.cpp
     network/wire_protocol.cpp
 )
 
-target_include_directories(aegis_frame_reassembler_test 
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(
-    aegis_frame_reassembler_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME frame_reassembler_test
-    COMMAND aegis_frame_reassembler_test
-)
-
-
-add_executable(aegis_nack_test
+add_aegis_test(
+    aegis_nack_test
+    nack_test
     tests/nack_test.cpp
     network/frame_reassembler.cpp
+    network/wire_protocol.cpp
     engine/nack.cpp
 )
 
-target_include_directories(aegis_nack_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(aegis_nack_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME nack_test
-    COMMAND aegis_nack_test
-)
-
-add_executable(aegis_retransmission_cache_test
+add_aegis_test(
+    aegis_retransmission_cache_test
+    retransmission_cache_test
     tests/retransmissioncache_test.cpp
     network/retransmission_cache.cpp
 )
 
-target_include_directories(aegis_retransmission_cache_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(aegis_retransmission_cache_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME retransmission_cache
-    COMMAND aegis_retransmission_cache_test
-)
-
-add_executable(aegis_retransmission_e2e_test
+add_aegis_test(
+    aegis_retransmission_e2e_test
+    retransmission_e2e_test
     tests/retransmission_e2e_test.cpp
     network/retransmission_cache.cpp
     network/frame_reassembler.cpp
     network/wire_protocol.cpp
     network/video_packetizer.cpp
     engine/nack.cpp
-    )
-
-target_include_directories(aegis_retransmission_e2e_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-set_target_properties(aegis_retransmission_e2e_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME retransmission_e2e_test
-    COMMAND aegis_retransmission_e2e_test
-)
-
-add_executable(aegis_network_monitor_test
+add_aegis_test(
+    aegis_network_monitor_test
+    network_monitor_test
     tests/network_monitor_test.cpp
     network/network_monitor.cpp
     network/network_simulator.cpp
 )
 
-target_include_directories(aegis_network_monitor_test
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-set_target_properties(aegis_network_monitor_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME network_monitor_test
-    COMMAND aegis_network_monitor_test
-)
-
-add_executable(aegis_adaptive_controller_test
+add_aegis_test(
+    aegis_adaptive_controller_test
+    adaptive_controller_test
     tests/adaptive_controller_test.cpp
     engine/adaptive_controller.cpp
 )
 
-target_include_directories(aegis_adaptive_controller_test
+# ============================================================
+# UDP transport test
+# ============================================================
+
+add_aegis_test(
+    aegis_udp_transport_test
+    udp_transport_test
+    tests/udp_transport_test.cpp
+    network/udp_transport.cpp
+)
+
+add_executable(aegis_udp_transport_demo
+    tests/udp_transport_demo.cpp
+    network/udp_transport.cpp
+)
+
+target_include_directories(aegis_udp_transport_demo
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-set_target_properties(aegis_adaptive_controller_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME adaptive_controller_test
-    COMMAND aegis_adaptive_controller_test
-)
-
-if (MSVC)
-
-add_executable(aegis_ffmpeg_video_encoder_test
-    tests/ffmpeg_video_encoder_test.cpp
-    media/ffmpeg_video_encoder.cpp
-)
-
-target_include_directories(aegis_ffmpeg_video_encoder_test
+target_compile_features(aegis_udp_transport_demo
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        D:/vcpkg/installed/x64-windows/include
+        cxx_std_20
 )
 
-target_link_directories(
-    aegis_ffmpeg_video_encoder_test
-    PRIVATE
-        D:/vcpkg/installed/x64-windows/lib
-)
+# ============================================================
+# Video encoder factory test
+# ============================================================
 
-target_link_libraries(
-    aegis_ffmpeg_video_encoder_test
-    PRIVATE
-        mf
-        mfplat
-        mfreadwrite
-        mfuuid
-        ole32
-        avcodec
-        avutil
-        swscale
-)
-
-set_target_properties(aegis_ffmpeg_video_encoder_test PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-)
-
-add_test(
-    NAME ffmpeg_video_encoder_test
-    COMMAND aegis_ffmpeg_video_encoder_test
-)
-
-endif()
 add_executable(aegis_video_encoder_factory_test
     tests/video_encoder_factory_test.cpp
     media/simulated_video_encoder.cpp
@@ -345,35 +277,85 @@ add_executable(aegis_video_encoder_factory_test
     media/ffmpeg_video_encoder.cpp
 )
 
-target_include_directories(
-    aegis_video_encoder_factory_test
+target_include_directories(aegis_video_encoder_factory_test
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
-        D:/vcpkg/installed/x64-windows/include
 )
 
-target_link_directories(
-    aegis_video_encoder_factory_test
+target_compile_features(aegis_video_encoder_factory_test
     PRIVATE
-        D:/vcpkg/installed/x64-windows/lib
+        cxx_std_20
 )
 
-target_link_libraries(
-    aegis_video_encoder_factory_test
+if (MSVC)
+
+    target_include_directories(aegis_video_encoder_factory_test
+        PRIVATE
+            D:/vcpkg/installed/x64-windows/include
+    )
+
+    target_link_directories(aegis_video_encoder_factory_test
+        PRIVATE
+            D:/vcpkg/installed/x64-windows/lib
+    )
+
+endif()
+
+target_link_libraries(aegis_video_encoder_factory_test
     PRIVATE
         avcodec
         avutil
         swscale
 )
 
-set_target_properties(
-    aegis_video_encoder_factory_test
-    PROPERTIES
-        CXX_STANDARD 20
-        CXX_STANDARD_REQUIRED ON
-)
-
 add_test(
     NAME video_encoder_factory_test
     COMMAND aegis_video_encoder_factory_test
 )
+
+# ============================================================
+# Windows-specific FFmpeg test
+# ============================================================
+
+if (MSVC)
+
+    add_executable(aegis_ffmpeg_video_encoder_test
+        tests/ffmpeg_video_encoder_test.cpp
+        media/ffmpeg_video_encoder.cpp
+    )
+
+    target_include_directories(aegis_ffmpeg_video_encoder_test
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+            D:/vcpkg/installed/x64-windows/include
+    )
+
+    target_link_directories(aegis_ffmpeg_video_encoder_test
+        PRIVATE
+            D:/vcpkg/installed/x64-windows/lib
+    )
+
+    target_link_libraries(aegis_ffmpeg_video_encoder_test
+        PRIVATE
+            mf
+            mfplat
+            mfreadwrite
+            mfuuid
+            ole32
+            avcodec
+            avformat
+            avutil
+            swscale
+    )
+
+    target_compile_features(aegis_ffmpeg_video_encoder_test
+        PRIVATE
+            cxx_std_20
+    )
+
+    add_test(
+        NAME ffmpeg_video_encoder_test
+        COMMAND aegis_ffmpeg_video_encoder_test
+    )
+
+endif()

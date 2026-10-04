@@ -1,5 +1,7 @@
 #pragma once
 
+#include "aegis/network/network_transport.hpp"
+
 #include <cstdint>
 #include <cstddef>
 
@@ -31,13 +33,11 @@ struct NetworkQualitySnapshot {
     double jitter_ms{0.0};
 };
 
-struct NetworkSimulatorStats;
-
 class NetworkMonitor final {
 public:
     //Calculate a quality snapshot from network statistics.
     [[nodiscard]] NetworkQualitySnapshot Update(
-    const NetworkSimulatorStats& stats,
+    const NetworkTransportStats& stats,
     std::size_t queued_packets,
     std::uint64_t retransmission_packets,
     std::uint64_t retransmission_cache_hits,

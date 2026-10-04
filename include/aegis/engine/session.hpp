@@ -13,14 +13,23 @@
 #include "aegis/network/retransmission_cache.hpp"
 #include "aegis/network/video_packetizer.hpp"
 #include "aegis/network/wire_protocol.hpp"
+#include "aegis/network/network_transport.hpp"
+#include "aegis/network/udp_transport.hpp"
 
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <string>
 
 namespace aegis::engine {
+
+enum class NetworkBackend
+{
+    kSimulator,
+    kUdp
+};
 
 // Runtime configuration for one complete media session.
 struct SessionConfig
@@ -41,6 +50,27 @@ struct SessionConfig
     aegis::media::VideoCapturerBackend capturer_backend{
         aegis::media::VideoCapturerBackend::kDefault
     };
+
+    // Select the network implementation
+    NetworkBackend network_backend{
+	NetworkBackend::kSimulator
+    };
+
+    // UDP local address
+    std::string udp_local_address{
+	"127.0.0.1"
+    };
+
+    // UDP local port.
+    std::uint16_t udp_local_port{9000};
+
+    // UDP remote address.
+    std::string udp_remote_address{
+	"127.0.0.1"
+    };
+
+    // UDP remote port.
+    std::uint16_t udp_remote_port{9001};
 
     // Number of frames processed by Run().
     std::size_t frame_count{10U};
@@ -233,7 +263,11 @@ private:
 
     // Sending and retransmission components.
     aegis::network::VideoPacketizer packetizer_;
-    aegis::network::NetworkSimulator network_simulator_;
+    
+    std::unique_ptr<
+	aegis::network::INetworkTransport
+    > network_transport_;
+
     aegis::network::RetransmissionCache retransmission_cache_;
 
     // Receiving and packet recovery components.

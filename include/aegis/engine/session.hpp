@@ -39,7 +39,7 @@ struct SessionConfig
 
     // Capturer implementation selected by the factory
     aegis::media::VideoCapturerBackend capturer_backend{
-        aegis::media::VideoCapturerBackend::kMediaFoundation
+        aegis::media::VideoCapturerBackend::kDefault
     };
 
     // Number of frames processed by Run().

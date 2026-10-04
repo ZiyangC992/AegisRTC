@@ -27,4 +27,6 @@ Makefile
 
 # Logs and temporary files
 *.log
-*.tmp
+*.tmpbuild-linux/
+build-msvc/
+*.save

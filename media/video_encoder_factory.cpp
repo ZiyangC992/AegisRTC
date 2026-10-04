@@ -1,6 +1,9 @@
-#include "aegis/media/simulated_video_encoder.hpp"
-#include "aegis/media/ffmpeg_video_encoder.hpp"
 #include "aegis/media/video_encoder_factory.hpp"
+#include "aegis/media/simulated_video_encoder.hpp"
+
+#ifdef _WIN32
+#include "aegis/media/ffmpeg_video_encoder.hpp"
+#endif
 
 #include <stdexcept>
 #include <utility>
@@ -39,7 +42,7 @@ CreateVideoEncoder(
                     simulated_config
                 );
         }
-
+	#ifdef _WIN32
         case VideoEncoderBackend::kFfmpeg:
         {
             FfmpegVideoEncoderConfig ffmpeg_config{
@@ -55,7 +58,7 @@ CreateVideoEncoder(
                     ffmpeg_config
                 );
         }
-
+	#endif
         default:
             throw std::invalid_argument(
                 "Unsupported video encoder backend."

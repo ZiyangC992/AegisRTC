@@ -47,10 +47,25 @@ int main()
             .encoder_backend =
                 aegis::media::VideoEncoderBackend::kFfmpeg,
 
-            .capturer_backend = 
+            .capturer_backend =
                 aegis::media::VideoCapturerBackend::
-                    kMediaFoundation,
-                    
+                    kDefault,
+
+            .network_backend =
+                aegis::engine::NetworkBackend::kUdp,
+
+            .udp_local_address =
+                "192.168.233.1",
+
+            .udp_local_port =
+                9001,
+
+            .udp_remote_address =
+                "192.168.233.129",
+
+            .udp_remote_port =
+                9000,
+                
             .frame_count = 10U,
             .frame_interval =
                 std::chrono::milliseconds{33},

@@ -22,12 +22,8 @@ int main()
         
     // Verify the simulated backend.
     const VideoEncoderConfig simulated_config{
-	#ifdef _WIN32	
-        .backend = VideoEncoderBackend::kFfmpeg,
-        #else
-	.backend = VideoEncoderBackend::kSimulated,
-	#endif
-	.width = 640U,
+	    .backend = VideoEncoderBackend::kSimulated,
+	    .width = 640U,
         .height = 480U,
         .frame_rate = 30U,
         .target_bitrate_kbps = 1500U,

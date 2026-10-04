@@ -244,6 +244,7 @@ add_aegis_test(
 # UDP transport test
 # ============================================================
 
+if (UNIX)
 add_aegis_test(
     aegis_udp_transport_test
     udp_transport_test
@@ -266,6 +267,8 @@ target_compile_features(aegis_udp_transport_demo
         cxx_std_20
 )
 
+
+endif()
 # ============================================================
 # Video encoder factory test
 # ============================================================
@@ -359,3 +362,5 @@ if (MSVC)
     )
 
 endif()
+
+

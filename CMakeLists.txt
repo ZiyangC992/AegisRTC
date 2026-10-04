@@ -15,53 +15,27 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Build the executable.
 add_executable(aegis_rtc
-    app.cpp
+    app_linux.cpp
 
-    media/mf_video_capturer.cpp
-    media/format_selector.cpp
-    media/simulated_video_encoder.cpp
-    media/ffmpeg_video_encoder.cpp
-    media/video_encoder_factory.cpp
+    media/v4l2_video_capturer.cpp
     media/video_capturer.cpp
     media/video_capturer_factory.cpp
 
-    network/video_Packetizer.cpp
-    network/network_simulator.cpp
-    network/network_monitor.cpp
-    network/wire_protocol.cpp
-    network/frame_reassembler.cpp
-    network/retransmission_cache.cpp
-    
-    engine/nack.cpp
-    engine/adaptive_controller.cpp
     engine/session.cpp
     engine/session_reporter.cpp
-)
-
-set(FFMPEG_ROOT
-    "D:/vcpkg/installed/x64-windows"
-)
-
-target_include_directories(aegis_rtc
-    PRIVATE
-        "${FFMPEG_ROOT}/include"
-)
-
-target_link_directories(aegis_rtc
-    PRIVATE
-        "${FFMPEG_ROOT}/lib"
-)
-
-target_link_libraries(aegis_rtc
-    PRIVATE
-        mf
-        mfplat
-        mfreadwrite
-        mfuuid
-        ole32
-        avcodec
-        avutil
-        swscale
+    engine/adaptive_controller.cpp
+    engine/nack.cpp
+    
+    media/video_encoder_factory.cpp
+    media/simulated_video_encoder.cpp
+    media/video_encoder_factory.cpp
+	
+    network/frame_reassembler.cpp
+    network/network_monitor.cpp
+    network/network_simulator.cpp
+    network/retransmission_cache.cpp
+    network/video_packetizer.cpp
+    network/wire_protocol.cpp
 )
 
 # Allow source files to include headers like:
@@ -71,13 +45,24 @@ target_include_directories(aegis_rtc
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# Compiler warnings and source encoding.
+# Platform-specific compiler options and libraries
 if(MSVC)
     target_compile_options(aegis_rtc
         PRIVATE
             /W4
             /permissive-
             /utf-8
+    )
+    
+    target_include_directories(aegis_rtc
+	PRIVATE
+	    ${CMAKE_CURRENT_SOURCE_DIR}/include
+	    D:/vcpkg/installed/x64-windows/include
+    )
+    
+    target_link_directories(aegis_rtc
+	PRIVATE
+	    D:/vcpkg/installed/x64-windows/lib
     )
 
     # Windows Media Foundation and COM libraries.
@@ -88,8 +73,29 @@ if(MSVC)
             mfreadwrite
             mfuuid
             ole32
+	    avcodec
+	    avformat
+    	    avutil
+	    swscale
     )
+elseif (UNIX)
+	target_compile_options(aegis_rtc
+		PRIVATE
+			-Wall
+			-Wextra
+			-Wpedantic
+	)
+	
+	target_link_libraries(aegis_rtc
+		PRIVATE
+			avcodec
+			avformat
+			avutil
+			swscale
+			v4l2
+	)
 else()
+
     message(FATAL_ERROR
         "This stage currently supports Windows with MSVC only."
     )
@@ -289,6 +295,8 @@ add_test(
     COMMAND aegis_adaptive_controller_test
 )
 
+if (MSVC)
+
 add_executable(aegis_ffmpeg_video_encoder_test
     tests/ffmpeg_video_encoder_test.cpp
     media/ffmpeg_video_encoder.cpp
@@ -329,6 +337,7 @@ add_test(
     COMMAND aegis_ffmpeg_video_encoder_test
 )
 
+endif()
 add_executable(aegis_video_encoder_factory_test
     tests/video_encoder_factory_test.cpp
     media/simulated_video_encoder.cpp

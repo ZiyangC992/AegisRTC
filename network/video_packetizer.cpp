@@ -66,7 +66,8 @@ namespace aegis::network {
                 .key_frame = frame.key_frame,
                 .start_of_frame = (offset == 0U),
                 .end_of_frame = 
-                        (offset + payload_size == total_bytes)  
+                        (offset + payload_size == total_bytes),
+		.payload = {}  
             };
 
             ++next_sequence_number_;

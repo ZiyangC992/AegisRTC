@@ -1,0 +1,85 @@
+[1/56] Building CXX object CMakeFiles/aegis_rtc.dir/media/video_encoder_factory.cpp.o
+[2/56] Building CXX object CMakeFiles/aegis_rtc.dir/media/video_capturer_factory.cpp.o
+FAILED: CMakeFiles/aegis_rtc.dir/media/video_capturer_factory.cpp.o 
+/usr/bin/c++  -I/home/charleachen/AegisRTC/include -std=c++20 -Wall -Wextra -Wpedantic -MD -MT CMakeFiles/aegis_rtc.dir/media/video_capturer_factory.cpp.o -MF CMakeFiles/aegis_rtc.dir/media/video_capturer_factory.cpp.o.d -o CMakeFiles/aegis_rtc.dir/media/video_capturer_factory.cpp.o -c /home/charleachen/AegisRTC/media/video_capturer_factory.cpp
+In file included from /home/charleachen/AegisRTC/media/video_capturer_factory.cpp:1:
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:18:31: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   18 |         VideoCapturerBackend::kMediaFoundation
+      |                               ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:19:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   19 |     };
+      |     ^
+[3/56] Building CXX object CMakeFiles/aegis_rtc.dir/media/simulated_video_encoder.cpp.o
+[4/56] Building CXX object CMakeFiles/aegis_rtc.dir/engine/session_reporter.cpp.o
+FAILED: CMakeFiles/aegis_rtc.dir/engine/session_reporter.cpp.o 
+/usr/bin/c++  -I/home/charleachen/AegisRTC/include -std=c++20 -Wall -Wextra -Wpedantic -MD -MT CMakeFiles/aegis_rtc.dir/engine/session_reporter.cpp.o -MF CMakeFiles/aegis_rtc.dir/engine/session_reporter.cpp.o.d -o CMakeFiles/aegis_rtc.dir/engine/session_reporter.cpp.o -c /home/charleachen/AegisRTC/engine/session_reporter.cpp
+In file included from /home/charleachen/AegisRTC/include/aegis/engine/session.hpp:7,
+                 from /home/charleachen/AegisRTC/include/aegis/engine/session_reporter.hpp:3,
+                 from /home/charleachen/AegisRTC/engine/session_reporter.cpp:1:
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:18:31: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   18 |         VideoCapturerBackend::kMediaFoundation
+      |                               ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:19:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   19 |     };
+      |     ^
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:42:45: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   42 |         aegis::media::VideoCapturerBackend::kMediaFoundation
+      |                                             ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:43:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   43 |     };
+      |     ^
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:153:46: error: could not convert ‘<brace-enclosed initializer list>()’ from ‘<brace-enclosed initializer list>’ to ‘aegis::engine::SessionConfig’
+  153 |     explicit Session(SessionConfig config = {});
+      |                                              ^
+      |                                              |
+      |                                              <brace-enclosed initializer list>
+[5/56] Building CXX object CMakeFiles/aegis_rtc.dir/app_linux.cpp.o
+FAILED: CMakeFiles/aegis_rtc.dir/app_linux.cpp.o 
+/usr/bin/c++  -I/home/charleachen/AegisRTC/include -std=c++20 -Wall -Wextra -Wpedantic -MD -MT CMakeFiles/aegis_rtc.dir/app_linux.cpp.o -MF CMakeFiles/aegis_rtc.dir/app_linux.cpp.o.d -o CMakeFiles/aegis_rtc.dir/app_linux.cpp.o -c /home/charleachen/AegisRTC/app_linux.cpp
+In file included from /home/charleachen/AegisRTC/include/aegis/engine/session.hpp:7,
+                 from /home/charleachen/AegisRTC/app_linux.cpp:1:
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:18:31: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   18 |         VideoCapturerBackend::kMediaFoundation
+      |                               ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:19:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   19 |     };
+      |     ^
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:42:45: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   42 |         aegis::media::VideoCapturerBackend::kMediaFoundation
+      |                                             ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:43:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   43 |     };
+      |     ^
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:153:46: error: could not convert ‘<brace-enclosed initializer list>()’ from ‘<brace-enclosed initializer list>’ to ‘aegis::engine::SessionConfig’
+  153 |     explicit Session(SessionConfig config = {});
+      |                                              ^
+      |                                              |
+      |                                              <brace-enclosed initializer list>
+/home/charleachen/AegisRTC/app_linux.cpp: In function ‘int main()’:
+/home/charleachen/AegisRTC/app_linux.cpp:28:9: error: designator order for field ‘aegis::engine::SessionConfig::encoder_backend’ does not match declaration order in ‘aegis::engine::SessionConfig’
+   28 |         };
+      |         ^
+[6/56] Building CXX object CMakeFiles/aegis_rtc.dir/engine/nack.cpp.o
+[7/56] Building CXX object CMakeFiles/aegis_rtc.dir/engine/session.cpp.o
+FAILED: CMakeFiles/aegis_rtc.dir/engine/session.cpp.o 
+/usr/bin/c++  -I/home/charleachen/AegisRTC/include -std=c++20 -Wall -Wextra -Wpedantic -MD -MT CMakeFiles/aegis_rtc.dir/engine/session.cpp.o -MF CMakeFiles/aegis_rtc.dir/engine/session.cpp.o.d -o CMakeFiles/aegis_rtc.dir/engine/session.cpp.o -c /home/charleachen/AegisRTC/engine/session.cpp
+In file included from /home/charleachen/AegisRTC/include/aegis/engine/session.hpp:7,
+                 from /home/charleachen/AegisRTC/engine/session.cpp:1:
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:18:31: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   18 |         VideoCapturerBackend::kMediaFoundation
+      |                               ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/media/video_capturer_factory.hpp:19:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   19 |     };
+      |     ^
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:42:45: error: ‘kMediaFoundation’ is not a member of ‘aegis::media::VideoCapturerBackend’
+   42 |         aegis::media::VideoCapturerBackend::kMediaFoundation
+      |                                             ^~~~~~~~~~~~~~~~
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:43:5: error: cannot convert ‘<brace-enclosed initializer list>’ to ‘aegis::media::VideoCapturerBackend’ in initialization
+   43 |     };
+      |     ^
+/home/charleachen/AegisRTC/include/aegis/engine/session.hpp:153:46: error: could not convert ‘<brace-enclosed initializer list>()’ from ‘<brace-enclosed initializer list>’ to ‘aegis::engine::SessionConfig’
+  153 |     explicit Session(SessionConfig config = {});
+      |                                              ^
+      |                                              |
+      |                                              <brace-enclosed initializer list>
+ninja: build stopped: subcommand failed.

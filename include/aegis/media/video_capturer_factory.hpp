@@ -9,13 +9,13 @@ namespace aegis::media {
 
 enum class VideoCapturerBackend : std::uint8_t
 {
-    kMediaFoundation
+    kDefault
 };
 
 struct VideoCapturerConfig
 {
     VideoCapturerBackend backend{
-        VideoCapturerBackend::kMediaFoundation
+        VideoCapturerBackend::kDefault
     };
 };
 

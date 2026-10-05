@@ -85,6 +85,15 @@ void SessionReporter::PrintFinalStatistics(
         << L"Completed frames   : "
         << statistics.completed_frames
         << L'\n'
+        << L"RTT samples       : "
+        << statistics.rtt_samples
+        << L'\n'
+        << L"Smoothed RTT      : "
+        << statistics.smoothed_rtt_ms
+        << L" ms\n"
+        << L"Retransmission RTO: "
+        << statistics.retransmission_timeout_ms
+        << L" ms\n"
         << L"Remaining queue    : "
         << remaining_queue
         << L'\n';

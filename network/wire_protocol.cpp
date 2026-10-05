@@ -4,8 +4,12 @@
 #include <limits>
 #include <stdexcept>
 #include <span>
+#include <utility>
 
 namespace aegis::network {
+
+inline constexpr std::uint16_t
+    kFeedbackPacketMagic = 0xA616;
 
 namespace {
 
@@ -370,6 +374,13 @@ void AppendUint64BigEndian(
         )
     );
 
+    AppendUint64BigEndian(
+        output,
+        static_cast<std::uint64_t>(
+            packet.header.send_timestamp_ms
+        )
+    );
+
     output.push_back(
         packet.header.flags
     );
@@ -473,6 +484,24 @@ void AppendUint64BigEndian(
         return false;
     }
 
+    std::uint64_t send_timestamp_ms = 0U;
+
+    if (
+        !ReadUint64BigEndian(
+            input,
+            offset,
+            send_timestamp_ms
+        )
+    )
+    {
+        return false;
+    }
+
+    temporary.header.send_timestamp_ms = 
+        static_cast<std::int64_t>(
+            send_timestamp_ms
+        );
+
     temporary.header.flags = input[offset];
 
     offset += 1U;
@@ -536,6 +565,245 @@ bool IsSequenceNumberNewer(
     //A forward distance smaller than half of the sequence space
     //means that candidate is newer than reference.
     return forward_distance < 32'768U;
+}
+
+bool SerializeFeedbackPacket(
+    const FeedbackPacket& packet,
+    std::vector<std::uint8_t>& output
+)
+{
+    if (
+        packet.version !=
+        kWireProtocolVersion
+    )
+    {
+        return false;
+    }
+
+    if (
+        packet.sequence_numbers.size() >
+        255U
+    )
+    {
+        return false;
+    }
+
+    output.clear();
+
+    AppendUint16BigEndian(
+        output,
+        kFeedbackPacketMagic
+    );
+
+    output.push_back(
+        packet.version
+    );
+
+    output.push_back(
+        static_cast<std::uint8_t>(
+            packet.type
+        )
+    );
+
+    AppendUint16BigEndian(
+        output,
+        packet.cumulative_acknowledgement
+    );
+
+    AppendUint16BigEndian(
+        output,
+        packet.echoed_sequence_number
+    );
+
+    AppendUint64BigEndian(
+        output,
+        static_cast<std::uint64_t>(
+            packet.echoed_timestamp_ms
+        )
+    );
+
+    output.push_back(
+        static_cast<std::uint8_t>(
+            packet.sequence_numbers.size()
+        )
+    );
+
+    for (
+        const std::uint16_t sequence_number :
+        packet.sequence_numbers
+    )
+    {
+        AppendUint16BigEndian(
+            output,
+            sequence_number
+        );
+    }
+
+    return true;
+}
+
+bool DeserializeFeedbackPacket(
+    std::span<const std::uint8_t> input,
+    FeedbackPacket& output
+)
+{
+    std::size_t offset = 0U;
+
+    std::uint16_t magic = 0U;
+
+    if (
+        !ReadUint16BigEndian(
+            input,
+            offset,
+            magic
+        )
+    )
+    {
+        return false;
+    }
+
+    if (
+        magic != kFeedbackPacketMagic
+    )
+    {
+        return false;
+    }
+
+    if (
+        offset >= input.size()
+    )
+    {
+        return false;
+    }
+
+    const std::uint8_t version =
+        input[offset++];
+
+    if (
+        version != kWireProtocolVersion
+    )
+    {
+        return false;
+    }
+
+    if (
+        offset >= input.size()
+    )
+    {
+        return false;
+    }
+
+    const auto type =
+        static_cast<FeedbackPacketType>(
+            input[offset++]
+        );
+
+    if (
+        type !=
+            FeedbackPacketType::kAcknowledgement &&
+        type !=
+            FeedbackPacketType::kNegativeAcknowledgement
+    )
+    {
+        return false;
+    }
+
+    FeedbackPacket packet{};
+
+    packet.magic = magic;
+    packet.version = version;
+    packet.type = type;
+
+    if (
+        !ReadUint16BigEndian(
+            input,
+            offset,
+            packet.cumulative_acknowledgement
+        )
+    )
+    {
+        return false;
+    }
+
+    if (
+        !ReadUint16BigEndian(
+            input,
+            offset,
+            packet.echoed_sequence_number
+        )
+    )
+    {
+        return false;
+    }
+
+    std::uint64_t timestamp = 0U;
+
+    if (
+        !ReadUint64BigEndian(
+            input,
+            offset,
+            timestamp
+        )
+    )
+    {
+        return false;
+    }
+
+    packet.echoed_timestamp_ms =
+        static_cast<std::int64_t>(
+            timestamp
+        );
+
+    if (
+        offset >= input.size()
+    )
+    {
+        return false;
+    }
+
+    const std::size_t sequence_count =
+        input[offset++];
+
+    packet.sequence_numbers.clear();
+
+    packet.sequence_numbers.reserve(
+        sequence_count
+    );
+
+    for (
+        std::size_t index = 0U;
+        index < sequence_count;
+        ++index
+    )
+    {
+        std::uint16_t sequence_number = 0U;
+
+        if (
+            !ReadUint16BigEndian(
+                input,
+                offset,
+                sequence_number
+            )
+        )
+        {
+            return false;
+        }
+
+        packet.sequence_numbers.push_back(
+            sequence_number
+        );
+    }
+
+    if (
+        offset != input.size()
+    )
+    {
+        return false;
+    }
+
+    output = std::move(packet);
+
+    return true;
 }
 
 }

@@ -420,9 +420,14 @@ Session::SendEncodedFrame(
     for (const auto& fragment : fragments)
     {   
         //Build, serialize, cache, and send
-        const auto wire_packet = 
+        auto wire_packet = 
             aegis::network::BuildWirePacket(
                 fragment);
+        
+        wire_packet.header.send_timestamp_ms = 
+            aegis::ToMilliseconds(
+                send_time
+            );
 
         std::vector<std::uint8_t>
             wire_data;
@@ -494,11 +499,55 @@ Session::ProcessReadyPackets(
             receive_time
         );
 
+    aegis::network::FeedbackPacket feedback{};
+
     result.received_packets = 
         receive_packets.size();
 
     for (const auto& scheduled_packet : receive_packets)
-    {   
+    {
+        if (
+            aegis::network::DeserializeFeedbackPacket(
+                scheduled_packet.wire_data,
+                feedback))
+        {
+            if (
+                feedback.type ==
+                aegis::network::FeedbackPacketType::
+                    kAcknowledgement)
+            {
+                const auto sent_time =
+                    aegis::TimePoint{
+                        std::chrono::milliseconds{
+                            feedback.echoed_timestamp_ms}};
+
+                const auto measured_rtt =
+                    receive_time -
+                    sent_time;
+
+                if (
+                    measured_rtt >
+                    aegis::Clock::duration::zero())
+                {
+                    rtt_estimator_.AddSample(
+                        std::chrono::duration_cast<
+                            aegis::Milliseconds>(measured_rtt));
+
+                    ++statistics_.rtt_samples;
+
+                    statistics_.smoothed_rtt_ms =
+                        static_cast<std::uint64_t>(
+                            rtt_estimator_.SmoothedRtt().count());
+
+                    statistics_.retransmission_timeout_ms =
+                        static_cast<std::uint64_t>(
+                            rtt_estimator_.Rto().count());
+                }
+            }
+
+            continue;
+        }
+
         aegis::network::WirePacket
             decoded_packet{};
         
@@ -528,6 +577,35 @@ Session::ProcessReadyPackets(
         }
 
         ++statistics_.decoded_packets;
+
+        aegis::network::FeedbackPacket acknowledgement{};
+
+        acknowledgement.type =
+            aegis::network::FeedbackPacketType::
+                kAcknowledgement;
+
+        acknowledgement.cumulative_acknowledgement =
+            decoded_packet.header.sequence_number;
+
+        acknowledgement.echoed_sequence_number =
+            decoded_packet.header.sequence_number;
+
+        acknowledgement.echoed_timestamp_ms =
+            decoded_packet.header.send_timestamp_ms;
+
+        std::vector<std::uint8_t>
+            acknowledgement_wire_data;
+
+        if (
+            aegis::network::SerializeFeedbackPacket(
+                acknowledgement,
+                acknowledgement_wire_data))
+        {
+            static_cast<void>(network_transport_->Send(
+                std::move(
+                    acknowledgement_wire_data),
+                receive_time));
+        }
 
         const auto flags = 
             static_cast<aegis::network::WirePacketFlag>(

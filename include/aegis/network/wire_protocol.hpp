@@ -17,7 +17,7 @@ inline constexpr std::uint8_t
     kWireProtocolVersion = 1U;
 
 inline constexpr std::size_t
-    kWirePacketHeaderSize = 20U;
+    kWirePacketHeaderSize = 28U;
 
 inline constexpr std::size_t    
     kMaxWirePayloadSize = 1200U;
@@ -36,8 +36,48 @@ enum class WirePacketFlag : std::uint8_t {
 
     //The packet is the first fragment of a frame.
     kStartOfFrame = 1U << 3U,
+};
 
+enum class FeedbackPacketType : std::uint8_t
+{
+    // Confirms received packets and carries RTT information.
+    kAcknowledgement = 1U,
 
+    // Reports missing sequence numbers.
+    kNegativeAcknowledgement = 2U
+};
+
+// Acknowledgement or NACK feedback sent over UDP.
+struct FeedbackPacket
+{
+    // Protocol magic number.
+    std::uint16_t magic{
+        kWireProtocolMagic
+    };
+
+    // Protocol version.
+    std::uint8_t version{
+        kWireProtocolVersion
+    };
+
+    // Feedback type.
+    FeedbackPacketType type{
+        FeedbackPacketType::kAcknowledgement
+    };
+
+    // Highest sequence number received continuously.
+    std::uint16_t cumulative_acknowledgement{0};
+
+    // Sequence number used for RTT measurement.
+    std::uint16_t echoed_sequence_number{0};
+
+    // Sender timestamp of echoed_sequence_number.
+    //
+    // Stored as milliseconds since the monotonic clock epoch.
+    std::int64_t echoed_timestamp_ms{0};
+
+    // Selective ACK or NACK sequence numbers.
+    std::vector<std::uint16_t> sequence_numbers;
 };
 
 [[nodiscard]] constexpr WirePacketFlag operator|(
@@ -59,7 +99,6 @@ enum class WirePacketFlag : std::uint8_t {
     ) != 0U;
 }
 
-
 struct WirePacketHeader {
 
     //Protocol magic number
@@ -76,6 +115,10 @@ struct WirePacketHeader {
 
     //Capture timestamp in 100-nanosecond units
     std::int64_t timestamp_100ns{0};
+
+    //Monotonic timestamp captured immediately before transmission.
+    //Unit: milliseconds since the process monotonic clock epoch.
+    std::uint64_t send_timestamp_ms{0};
 
     //Bit flags such as key frame and end of frame
     std::uint8_t flags{0};
@@ -114,5 +157,17 @@ BuildWirePacket(
     std::uint16_t candidate,
     std::uint16_t reference
 ) noexcept;
+
+// Serialize a feedback packet into UDP wire bytes.
+[[nodiscard]] bool SerializeFeedbackPacket(
+    const FeedbackPacket& packet,
+    std::vector<std::uint8_t>& output
+);
+
+// Deserialize UDP wire bytes into a feedback packet.
+[[nodiscard]] bool DeserializeFeedbackPacket(
+    std::span<const std::uint8_t> input,
+    FeedbackPacket& output
+);
 
 } // namespace aegis::network

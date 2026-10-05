@@ -15,6 +15,7 @@
 #include "aegis/network/wire_protocol.hpp"
 #include "aegis/network/network_transport.hpp"
 #include "aegis/network/udp_transport.hpp"
+#include "aegis/network/rtt_estimator.hpp"
 
 #include <chrono>
 #include <cstddef>
@@ -174,6 +175,11 @@ struct SessionStatistics
 
     std::uint64_t capture_empty_reads{0U};
     std::uint64_t encoder_delayed_calls{0U};
+
+    std::uint64_t rtt_samples{0U};
+    std::uint64_t smoothed_rtt_ms{0U};
+    std::uint64_t retransmission_timeout_ms{0U};
+
 };
 
 class Session final
@@ -267,6 +273,17 @@ private:
     std::unique_ptr<
 	aegis::network::INetworkTransport
     > network_transport_;
+
+    // Estimates network round-trip time from ACK feedback.
+    aegis::network::RttEstimator
+        rtt_estimator_{};
+
+    // Prevents repeated RTT sampling
+    // from the same packet.
+    std::map<
+        std::uint16_t,
+        aegis::TimePoint>
+        pending_rtt_samples_;
 
     aegis::network::RetransmissionCache retransmission_cache_;
 

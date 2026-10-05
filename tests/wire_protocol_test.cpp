@@ -24,8 +24,11 @@ int main() {
         0xCCU
     };
 
-    const WirePacket packet = 
+    WirePacket packet = 
         BuildWirePacket(fragment);
+
+    packet.header.send_timestamp_ms = 
+        123456789;
 
     std::vector<std::uint8_t> output;
 
@@ -69,18 +72,18 @@ int main() {
     assert(output[7] == 0x03U);
     assert(output[8] == 0x04U);
 
-    assert(output[17] ==
+    assert(output[25] ==
         static_cast<std::uint8_t>(
             WirePacketFlag::kKeyFrame |
             WirePacketFlag::kEndOfFrame
         ));
     
-    assert(output[18] == 0x00U);
-    assert(output[19] == 0x03U);
+    assert(output[26] == 0x00U);
+    assert(output[27] == 0x03U);
 
-    assert(output[20] == 0xAAU);
-    assert(output[21] == 0xBBU);
-    assert(output[22] == 0xCCU);
+    assert(output[28] == 0xAAU);
+    assert(output[29] == 0xBBU);
+    assert(output[30] == 0xCCU);
     
     std::wcout
         << L"Wire protocol serialization test passed.\n";
@@ -114,6 +117,10 @@ int main() {
     assert(
         decoded_packet.header.timestamp_100ns ==
         packet.header.timestamp_100ns);
+    
+    assert(
+        decoded_packet.header.send_timestamp_ms == 
+        packet.header.send_timestamp_ms);
 
     assert(
         decoded_packet.header.flags ==
@@ -164,6 +171,154 @@ int main() {
         );
 
     assert(!invalid_magic_result);
+
+// Test acknowledgement serialization.
+aegis::network::FeedbackPacket acknowledgement{};
+
+acknowledgement.type =
+    aegis::network::FeedbackPacketType::
+        kAcknowledgement;
+
+acknowledgement.cumulative_acknowledgement =
+    100U;
+
+acknowledgement.echoed_sequence_number =
+    100U;
+
+acknowledgement.echoed_timestamp_ms =
+    123456789;
+
+acknowledgement.sequence_numbers =
+{
+    98U,
+    99U,
+    100U
+};
+
+std::vector<std::uint8_t>
+    acknowledgement_wire_data;
+
+assert(
+    aegis::network::SerializeFeedbackPacket(
+        acknowledgement,
+        acknowledgement_wire_data
+    )
+);
+
+aegis::network::FeedbackPacket
+    decoded_acknowledgement{};
+
+assert(
+    aegis::network::DeserializeFeedbackPacket(
+        acknowledgement_wire_data,
+        decoded_acknowledgement
+    )
+);
+
+assert(
+    decoded_acknowledgement.type ==
+    aegis::network::FeedbackPacketType::
+        kAcknowledgement
+);
+
+assert(
+    decoded_acknowledgement
+        .cumulative_acknowledgement ==
+    100U
+);
+
+assert(
+    decoded_acknowledgement
+        .echoed_sequence_number ==
+    100U
+);
+
+assert(
+    decoded_acknowledgement
+        .echoed_timestamp_ms ==
+    123456789
+);
+
+assert(
+    decoded_acknowledgement
+        .sequence_numbers.size() ==
+    3U
+);
+
+assert(
+    decoded_acknowledgement
+        .sequence_numbers[0] ==
+    98U
+);
+
+// Test negative acknowledgement serialization.
+aegis::network::FeedbackPacket nack{};
+
+nack.type =
+    aegis::network::FeedbackPacketType::
+        kNegativeAcknowledgement;
+
+nack.cumulative_acknowledgement =
+    100U;
+
+nack.echoed_sequence_number =
+    100U;
+
+nack.echoed_timestamp_ms =
+    987654321;
+
+nack.sequence_numbers =
+{
+    101U,
+    103U,
+    104U
+};
+
+std::vector<std::uint8_t>
+    nack_wire_data;
+
+assert(
+    aegis::network::SerializeFeedbackPacket(
+        nack,
+        nack_wire_data
+    )
+);
+
+aegis::network::FeedbackPacket
+    decoded_nack{};
+
+assert(
+    aegis::network::DeserializeFeedbackPacket(
+        nack_wire_data,
+        decoded_nack
+    )
+);
+
+assert(
+    decoded_nack.type ==
+    aegis::network::FeedbackPacketType::
+        kNegativeAcknowledgement
+);
+
+assert(
+    decoded_nack.sequence_numbers.size() ==
+    3U
+);
+
+assert(
+    decoded_nack.sequence_numbers[0] ==
+    101U
+);
+
+assert(
+    decoded_nack.sequence_numbers[1] ==
+    103U
+);
+
+assert(
+    decoded_nack.sequence_numbers[2] ==
+    104U
+);
 
     std::wcout
         << L"Wire protocol round-trip test passed.\n";

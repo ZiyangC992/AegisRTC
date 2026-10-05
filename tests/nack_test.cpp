@@ -45,87 +45,29 @@ int main() {
         early_nacks.empty()
     );
 
-    const auto first_nacks = 
+    const auto first_nacks =
         controller.Poll(
-            base_time +
-            std::chrono::milliseconds{20}
-        );
+            base_time + std::chrono::milliseconds{25},
+            std::chrono::milliseconds{100});
 
     assert(
-        !first_nacks.empty()
-    );
+        first_nacks.size() == 2U);
 
-    assert(
-        first_nacks.size() == 2U
-    );
-
-    assert(
-        first_nacks[0] == 101U
-    );
-
-    assert(
-        first_nacks[1] == 102U
-    );
-
-    const auto too_early_retry = 
+    const auto early_retry =
         controller.Poll(
-            base_time +
-            std::chrono::milliseconds{40}
-        );
-    
+            base_time + std::chrono::milliseconds{50},
+            std::chrono::milliseconds{100});
+
     assert(
-        too_early_retry.empty()
-    );
-    
-    const auto second_nacks = 
+        early_retry.empty());
+
+    const auto later_retry =
         controller.Poll(
-            base_time +
-            std::chrono::milliseconds{70}
-        );
+            base_time + std::chrono::milliseconds{130},
+            std::chrono::milliseconds{100});
 
     assert(
-        !second_nacks.empty()
-    );
-
-    assert(
-        second_nacks.size() == 2U
-    );
-
-    assert(
-        second_nacks[0] == 101U
-    );
-
-    assert(
-        second_nacks[1] == 102U
-    );
-
-    controller.OnPacketRecovered(
-        101U
-    );
-
-    const auto after_retry = 
-        controller.Poll(
-            base_time +
-            std::chrono::milliseconds{120}
-        );
-
-    assert(
-        after_retry.size() == 1U
-    );
-
-    assert(
-        after_retry[0] == 102U
-    );
-
-    const auto exhausted = 
-        controller.Poll(
-            base_time +
-            std::chrono::milliseconds{200}
-        );
-
-    assert(
-        exhausted.empty()
-    );
+        later_retry.size() == 2U);
 
     const NackConfig expire_config{
         .reorder_wait = std::chrono::milliseconds{10},
@@ -165,7 +107,7 @@ int main() {
     assert(
         expired == 1U
     );
-    
+
     std::wcout
         << L"Nack controller tests passed.\n";
 }

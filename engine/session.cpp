@@ -680,8 +680,15 @@ Session::ProcessNackRequests(
 {
     RetransmissionResult result{};
 
-    const auto nack_sequence_numbers = 
-        nack_controller_.Poll(send_time);
+    // Use the RTT-based retransmission timeout
+    // as the dynamic NACK retry interval.
+    const auto dynamic_retry_interval =
+        rtt_estimator_.Rto();
+
+    const auto nack_sequence_numbers =
+        nack_controller_.Poll(
+            send_time,
+            dynamic_retry_interval);
 
     for (const std::uint16_t sequence_number :
         nack_sequence_numbers)
@@ -773,10 +780,15 @@ Session::Expire(
             now
         );
 
-    result.expired_missing_packets = 
+    // Keep a missing-packet record for
+    // approximately three retransmission timeouts.
+    const auto dynamic_missing_age =
+        rtt_estimator_.Rto() * 3;
+
+    result.expired_missing_packets =
         nack_controller_.Expire(
-            now
-        );
+            now,
+            dynamic_missing_age);
 
     result.expired_cache_packets = 
         retransmission_cache_.Expire(

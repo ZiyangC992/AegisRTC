@@ -55,10 +55,22 @@ public:
         TimePoint now
     );
 
+    // Return missing sequence numbers using
+    // a caller-provided retry interval.
+    [[nodiscard]] std::vector<std::uint16_t> Poll(
+        TimePoint now,
+        aegis::Milliseconds retry_interval);
+
     //Remove missing-packet records that have exceeded their lifetime.
     [[nodiscard]] std::size_t Expire(
         TimePoint now
     ) noexcept;
+
+    // Remove missing packets using
+    // a caller-provided maximum age.
+    [[nodiscard]] std::size_t Expire(
+        TimePoint now,
+        aegis::Milliseconds max_missing_age) noexcept;
 
 private:
     //Internal state of one missing packet.

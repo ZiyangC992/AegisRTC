@@ -126,104 +126,154 @@ void NackController::OnPacketRecovered(
 }
 
 std::vector<std::uint16_t>
-    NackController::Poll(
-        TimePoint now
-) {
-    
-    std::vector<std::uint16_t> nack_sequence_numbers{};
+NackController::Poll(
+    TimePoint now
+)
+{
+    return Poll(
+        now,
+        config_.retry_interval
+    );
+}
+
+std::vector<std::uint16_t>
+NackController::Poll(
+    TimePoint now,
+    aegis::Milliseconds retry_interval
+)
+{
+    if (retry_interval.count() <= 0)
+    {
+        retry_interval =
+            config_.retry_interval;
+    }
+
+    std::vector<std::uint16_t>
+        nack_sequence_numbers{};
 
     nack_sequence_numbers.reserve(
         config_.max_nack_batch_size
     );
 
     for (
-        auto& [sequence_number,missing_packet] : 
+        auto& [
+            sequence_number,
+            missing_packet
+        ] :
         missing_packets_
-    ) {
-       //Stop when the batch size limit is reached. 
-       if (
-            nack_sequence_numbers.size() >= 
+    )
+    {
+        if (
+            nack_sequence_numbers.size() >=
             config_.max_nack_batch_size
-       ) {
-          break;
-       }
+        )
+        {
+            break;
+        }
 
-        const auto missing_age = 
-            now - 
+        const auto missing_age =
+            now -
             missing_packet.first_missing_time;
 
-        //Wait for possible reordering before the first NACK.
+        // Keep the original reorder wait.
+        // RTT is used for retry timing,
+        // not for the first reordering delay.
         if (
             missing_age <
             config_.reorder_wait
-        ) {
+        )
+        {
             continue;
         }
 
-        //Do not exceed the retry limit.
         if (
             missing_packet.retry_count >=
             config_.max_retries
-        ) {
+        )
+        {
             continue;
         }
 
-        const auto last_missing_age = 
+        const auto last_nack_age =
             now -
             missing_packet.last_nack_time;
 
-        //Retries must respect the minimum interval.
         if (
             missing_packet.retry_count > 0U &&
-            last_missing_age < config_.retry_interval
-        ) {
+            last_nack_age <
+                retry_interval
+        )
+        {
             continue;
         }
 
-        //Add this sequence number to the current NACK batch.
         nack_sequence_numbers.push_back(
             sequence_number
         );
 
-        //Record this NACK attempt.
         ++missing_packet.retry_count;
-        missing_packet.last_nack_time = now;
+
+        missing_packet.last_nack_time =
+            now;
     }
 
     return nack_sequence_numbers;
 }
 
-std::size_t 
-    NackController::Expire(
-        TimePoint now
-) noexcept {
+std::size_t
+NackController::Expire(
+    TimePoint now
+) noexcept
+{
+    return Expire(
+        now,
+        config_.max_missing_age
+    );
+}
+
+std::size_t
+NackController::Expire(
+    TimePoint now,
+    aegis::Milliseconds max_missing_age
+) noexcept
+{
+    if (max_missing_age.count() <= 0)
+    {
+        max_missing_age =
+            config_.max_missing_age;
+    }
 
     std::size_t expire_count = 0U;
 
-    for(
-        auto iterator = missing_packets_.begin();
+    for (
+        auto iterator =
+            missing_packets_.begin();
         iterator != missing_packets_.end();
-    ) {
-        const auto missing_age = 
-            now - iterator->second.first_missing_time;
+    )
+    {
+        const auto missing_age =
+            now -
+            iterator->second.first_missing_time;
 
-        if (missing_age > config_.max_missing_age) {
-
-            //erase returns the next valid iterator.
-            iterator = 
+        if (
+            missing_age >=
+            max_missing_age
+        )
+        {
+            iterator =
                 missing_packets_.erase(
                     iterator
                 );
 
             ++expire_count;
-        } else {
-            //Move to the next record when it is still valid.
+        }
+        else
+        {
             ++iterator;
         }
     }
 
     return expire_count;
 }
-
 
 }

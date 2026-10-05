@@ -34,6 +34,7 @@ set(AEGIS_COMMON_SOURCES
     network/retransmission_cache.cpp
     network/video_packetizer.cpp
     network/wire_protocol.cpp
+    network/rtt_estimator.cpp
 )
 
 # ============================================================
@@ -364,3 +365,9 @@ if (MSVC)
 endif()
 
 
+add_aegis_test(
+    aegis_rtt_estimator_test
+    rtt_estimator_test
+    network/rtt_estimator.cpp
+    tests/rtt_estimator_test.cpp
+)

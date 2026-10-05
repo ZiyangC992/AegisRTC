@@ -27,14 +27,16 @@ Makefile
 
 # Logs and temporary files
 *.log
-*.tmpbuild-linux/
-build-msvc/
-*.save
-
-
-build-linux/
-build-msvc/
+*.tmp
 *.save
 *.o
 *.obj
 *.exe
+*.dll
+*.lib
+
+# Out-of-source build trees
+build/
+build-linux/
+build-msvc/
+out/

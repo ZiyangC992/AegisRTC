@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"D:/AegisRTC/build-msvc/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
